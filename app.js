@@ -24,25 +24,51 @@ function userInput() {
     question = [{
         type: "input",
         name: "name",
-        message: "What is your name?"
+        message: "What is your name?",
+        validate: val => {
+            if (!/^[a-zA-Z]+$/gi.test(val) || val.length === 0) {
+                return "Please enter valid name"
+            }
+            return true;
+        }
     },
     {
         type: "input",
         name: "id",
-        message: "What is your employee id?"
+        message: "What is your employee id?",
+        validate: val => {
+            if (!/^[0-9]+$/gi.test(val) || val.length === 0) {
+                return "Please enter valid number"
+            }
+            return true;
+        },
+
     },
     {
         type: "input",
         name: "email",
-        message: "What is your email id?"
+        message: "What is your email?",
+        validate: val => {
+            if (!(/\S+@\S+\.\S+/gi.test(val)) || val.length === 0) {
+                return "Please enter valid email"
+            }
+            return true;
+        }
     }]
+    // /^\w+([-+.']\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*$/gi.test(val)
     inquirer.prompt(employee).then(response => {
 
         if (response.Employeetype === "Engineer") {
             question.push({
                 type: "input",
                 name: "github",
-                message: "What is your github username?"
+                message: "What is your github username?",
+                validate: val => {
+                    if (!/^[a-zA-Z]+$/gi.test(val) || val.length === 0) {
+                        return "Please enter valid username"
+                    }
+                    return true;
+                },
             })
             inquirer
                 .prompt(question)
@@ -56,7 +82,13 @@ function userInput() {
             question.push({
                 type: "input",
                 name: "school",
-                message: "What is your School name?"
+                message: "What is your School name?",
+                validate: val => {
+                    if (!/^[a-zA-Z]+$/gi.test(val) || val.length === 0) {
+                        return "Please enter valid schoolname"
+                    }
+                    return true;
+                },
             })
             inquirer
                 .prompt(question)
@@ -71,7 +103,13 @@ function userInput() {
             question.push({
                 type: "input",
                 name: "officenumber",
-                message: "What is your office number?"
+                message: "What is your office number?",
+                validate: val => {
+                    if (!/^[0-9]+$/gi.test(val) || val.length === 0) {
+                        return "Please enter valid number"
+                    }
+                    return true;
+                },
             })
             inquirer
                 .prompt(question)
