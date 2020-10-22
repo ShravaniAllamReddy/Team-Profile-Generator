@@ -18,13 +18,13 @@ const employee = {
     choices: ["Engineer", "Intern", "Manager"]
 };
 
-//Used inquirer to gather information about the development team members,
-// and to create objects for each team member (using the correct classes as blueprints!)
+//function to ask different questions via inquirer depending on employee type.
 function userInput() {
     question = [{
         type: "input",
         name: "name",
         message: "What is your name?",
+        //user input must be letters 
         validate: val => {
             if (!/^[a-zA-Z]+$/gi.test(val) || val.length === 0) {
                 return "Please enter valid name"
@@ -36,6 +36,7 @@ function userInput() {
         type: "input",
         name: "id",
         message: "What is your employee id?",
+        // user input must be numbers
         validate: val => {
             if (!/^[0-9]+$/gi.test(val) || val.length === 0) {
                 return "Please enter valid number"
@@ -48,6 +49,7 @@ function userInput() {
         type: "input",
         name: "email",
         message: "What is your email?",
+        //user input must be anystring@anystring.anystring
         validate: val => {
             if (!(/\S+@\S+\.\S+/gi.test(val)) || val.length === 0) {
                 return "Please enter valid email"
@@ -55,7 +57,6 @@ function userInput() {
             return true;
         }
     }]
-    // /^\w+([-+.']\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*$/gi.test(val)
     inquirer.prompt(employee).then(response => {
 
         if (response.Employeetype === "Engineer") {
@@ -63,6 +64,7 @@ function userInput() {
                 type: "input",
                 name: "github",
                 message: "What is your github username?",
+                //user input must be letters 
                 validate: val => {
                     if (!/^[a-zA-Z]+$/gi.test(val) || val.length === 0) {
                         return "Please enter valid username"
@@ -73,7 +75,7 @@ function userInput() {
             inquirer
                 .prompt(question)
                 .then(engineer => {
-                    const newengineer = new Engineer(engineer.id, engineer.name, engineer.email, engineer.github);
+                    const newengineer = new Engineer(engineer.name, engineer.id, engineer.email, engineer.github);
                     teamArray.push(newengineer);
                     addEmployee();
                 })
@@ -83,6 +85,7 @@ function userInput() {
                 type: "input",
                 name: "school",
                 message: "What is your School name?",
+                //user input must be letters 
                 validate: val => {
                     if (!/^[a-zA-Z]+$/gi.test(val) || val.length === 0) {
                         return "Please enter valid schoolname"
@@ -93,7 +96,7 @@ function userInput() {
             inquirer
                 .prompt(question)
                 .then(intern => {
-                    const newintern = new Intern(intern.id, intern.name, intern.email, intern.school);
+                    const newintern = new Intern(intern.name, intern.id, intern.email, intern.school);
                     teamArray.push(newintern);
                     addEmployee();
                 })
@@ -104,6 +107,7 @@ function userInput() {
                 type: "input",
                 name: "officenumber",
                 message: "What is your office number?",
+                // user input must be numbers
                 validate: val => {
                     if (!/^[0-9]+$/gi.test(val) || val.length === 0) {
                         return "Please enter valid number"
@@ -114,7 +118,7 @@ function userInput() {
             inquirer
                 .prompt(question)
                 .then(manager => {
-                    const newmanager = new Manager(manager.id, manager.name, manager.email, manager.officenumber);
+                    const newmanager = new Manager(manager.name, manager.id, manager.email, manager.officenumber);
                     teamArray.push(newmanager);
                     addEmployee();
                 })
@@ -122,6 +126,8 @@ function userInput() {
     })
 }
 
+//function which generates html from render function
+//the `render` function will generate and return a block of HTML including templated divs for each employee!
 function writeToHtml() {
     console.log(teamArray);
     const teamHtml = render(teamArray);
@@ -134,20 +140,23 @@ function writeToHtml() {
     })
 }
 
+//function which is called recursivly to add more employees
+//and team.html is generated after the user has input all employees desired.
 function addEmployee() {
     inquirer
         .prompt([
             {
                 type: "confirm",
                 name: "choice",
-                message: "would you like to add new employees?"
+                message: "would you like to add new employee?"
             }
         ])
         .then(confirmAddemployee => {
-
+            // if user enters yes userInput function is called
             if (confirmAddemployee.choice) {
                 userInput();
             }
+            //if user enters no, html is generated
             else {
                 writeToHtml();
             }
@@ -155,29 +164,8 @@ function addEmployee() {
         });
 }
 
+//function call to initialise the application
 addEmployee();
 
 
-
-
-
-// After the user has input all employees desired, call the `render` function (required
-// above) and pass in an array containing all employee objects; the `render` function will
-// generate and return a block of HTML including templated divs for each employee!
-
-// After you have your html, you're now ready to create an HTML file using the HTML
-// returned from the `render` function. Now write it to a file named `team.html` in the
-// `output` folder. You can use the variable `outputPath` above target this location.
-// Hint: you may need to check if the `output` folder exists and create it if it
-// does not.
-
-// HINT: each employee type (manager, engineer, or intern) has slightly different
-// information; write your code to ask different questions via inquirer depending on
-// employee type.
-
-// HINT: make sure to build out your classes first! Remember that your Manager, Engineer,
-// and Intern classes should all extend from a class named Employee; see the directions
-// for further information. Be sure to test out each class and verify it generates an
-// object with the correct structure and methods. This structure will be crucial in order
-// for the provided `render` function to work! ```
 
